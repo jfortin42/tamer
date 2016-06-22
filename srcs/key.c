@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:12:08 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 14:57:42 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 17:10:13 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	ft_hook_add(int keycode, t_mlx *mlx)
 		ft_draw(mlx);
 		ft_string_put(mlx);
 		MSP(mlx->mlx, mlx->win, 630, 735, 0x00FEDC, mlx->pos);
+		free(mlx->pos);
+		//(TMP->type != 4) ? free(mlx->rot) : NULL;
 		return (-1);
 	}
 	if (keycode == 78)

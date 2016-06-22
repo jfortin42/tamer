@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/17 18:39:06 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 14:27:14 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 17:10:31 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ static void		ft_tmp_string(t_mlx *mlx)
 	ft_strjoin(" ", (
 	ft_strjoin(ft_itoa(TMP->pos.y), (
 	ft_strjoin(" ", ft_itoa(TMP->pos.z), 'R')), 'B')), 'R')), 'B')), 'R');
-	mlx->rot = (TMP->type != 4) ? ft_strjoin("rot: ", (
-	ft_strjoin(ft_fitoa(TMP->rot.x), (
-	ft_strjoin(" ", (
-	ft_strjoin(ft_fitoa(TMP->rot.y), (
-	ft_strjoin(" ", ft_fitoa(TMP->rot.z), 'R')), 'B')), 'R')), 'B')), 'R')
-	: NULL;
+	/*if (TMP->type != 4)
+	{
+		mlx->rot = ft_strjoin("rot: ", (
+		ft_strjoin(ft_fitoa(TMP->rot.x), (
+		ft_strjoin(" ", (
+		ft_strjoin(ft_fitoa(TMP->rot.y), (
+		ft_strjoin(" ", ft_fitoa(TMP->rot.z), 'R')), 'B')), 'R')), 'B')), 'R');
+	}*/
 }
 
 static t_obj	*ft_seek(double u, double v, t_vec vpos, t_mlx *mlx)
@@ -75,9 +77,10 @@ static t_obj	*ft_seek(double u, double v, t_vec vpos, t_mlx *mlx)
 
 void			ft_string_put(t_mlx *mlx)
 {
-	char	*s;
-
-	s = (TMP->type != 3) ? ft_strjoin("size: ", ft_itoa(TMP->size), 'R') : NULL;
+	//char	*s;
+	//
+	//if (TMP->type != 3)
+	//	s = ft_strjoin("size: ", ft_itoa(TMP->size), 'R');
 	ft_tmp_string(mlx);
 	if (TMP->type == 1 || TMP->type == 2)
 	{
@@ -85,20 +88,21 @@ void			ft_string_put(t_mlx *mlx)
 			MSP(mlx->mlx, mlx->win, 630, 720, 0x00FEDC, "object: cone");
 		if (TMP->type == 2)
 			MSP(mlx->mlx, mlx->win, 630, 720, 0x00FEDC, "object: cylinder");
-		MSP(mlx->mlx, mlx->win, 630, 750, 0x00FEDC, mlx->rot);
-		MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
+		//MSP(mlx->mlx, mlx->win, 630, 750, 0x00FEDC, mlx->rot);
+		//MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
 	}
 	else if (TMP->type == 3)
 	{
 		MSP(mlx->mlx, mlx->win, 630, 720, 0x00FEDC, "object: plane");
-		MSP(mlx->mlx, mlx->win, 630, 750, 0x00FEDC, mlx->rot);
+		//MSP(mlx->mlx, mlx->win, 630, 750, 0x00FEDC, mlx->rot);
 	}
 	else if (TMP->type == 4)
 	{
 		MSP(mlx->mlx, mlx->win, 630, 720, 0x00FEDC, "object: sphere");
-		MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
+	//	MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
 	}
-	(TMP->type != 3) ? free(s) : NULL;
+	//if (TMP->type != 3)
+	//	free(s);
 }
 
 int				ft_mouse(int button, int x, int y, t_mlx *mlx)
@@ -121,6 +125,8 @@ int				ft_mouse(int button, int x, int y, t_mlx *mlx)
 		}
 		ft_string_put(mlx);
 		MSP(mlx->mlx, mlx->win, 630, 735, 0x00FEDC, mlx->pos);
+		free(mlx->pos);
+		//(TMP->type != 4) ? free(mlx->rot) : NULL;
 		mlx->selection = 1;
 	}
 	return (0);

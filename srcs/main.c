@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:48:36 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 16:08:17 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 17:03:14 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int		init_mlx(t_mlx *mlx, char *s)
 	name = ft_strjoin("RTv1: ", s, 'N');
 	mlx->mlx = mlx_init();
 	mlx->img = mlx_new_image(mlx->mlx, WIN_W, WIN_H);
-	mlx->win = mlx_new_window(mlx->mlx, WIN_W, WIN_H, "name");
+	mlx->win = mlx_new_window(mlx->mlx, WIN_W, WIN_H, name);
 	free(name);
 	mlx->d = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->size_line,
 	&mlx->endian);
