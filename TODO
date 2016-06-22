@@ -1,0 +1,4 @@
+dernier truc a faire: creer un ft_ftoa (itoa pour les floats)
+Afin d'avoir un mlx->rot correct lorsque l'on clique sur une forme.
+ne pas oublier de liberer. aucune leaks!
+Voila
