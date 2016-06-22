@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/17 18:39:06 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 17:10:31 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 17:15:00 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,9 @@ static t_obj	*ft_seek(double u, double v, t_vec vpos, t_mlx *mlx)
 
 void			ft_string_put(t_mlx *mlx)
 {
-	//char	*s;
-	//
-	//if (TMP->type != 3)
-	//	s = ft_strjoin("size: ", ft_itoa(TMP->size), 'R');
+	char	*s;
+
+	s = (TMP->type != 3) ? ft_strjoin("size: ", ft_itoa(TMP->size), 'R') : NULL;
 	ft_tmp_string(mlx);
 	if (TMP->type == 1 || TMP->type == 2)
 	{
@@ -89,7 +88,7 @@ void			ft_string_put(t_mlx *mlx)
 		if (TMP->type == 2)
 			MSP(mlx->mlx, mlx->win, 630, 720, 0x00FEDC, "object: cylinder");
 		//MSP(mlx->mlx, mlx->win, 630, 750, 0x00FEDC, mlx->rot);
-		//MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
+		MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
 	}
 	else if (TMP->type == 3)
 	{
@@ -99,10 +98,9 @@ void			ft_string_put(t_mlx *mlx)
 	else if (TMP->type == 4)
 	{
 		MSP(mlx->mlx, mlx->win, 630, 720, 0x00FEDC, "object: sphere");
-	//	MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
+		MSP(mlx->mlx, mlx->win, 630, 765, 0x00FEDC, s);
 	}
-	//if (TMP->type != 3)
-	//	free(s);
+	(TMP->type != 3) ? free(s) : NULL;
 }
 
 int				ft_mouse(int button, int x, int y, t_mlx *mlx)
