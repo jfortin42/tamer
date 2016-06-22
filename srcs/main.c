@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 15:48:36 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 14:32:35 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 16:08:17 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char		*ft_getbuf(char *s, int *nbl)
 	if (ft_start(s, &fd) == -1)
 		return (NULL);
 	while (get_next_line(fd, &line) > 0 && (*nbl)++ > -1)
-		buf = ft_strjoin(ft_strjoin(buf, line, 'B'), "\n", 'L');
+		buf = ft_strjoin(buf, ft_strjoin(line, "\n", 'L'), 'B');
 	if (close(fd) == -1)
 	{
 		ft_putendl(ft_strjoin("error: ", strerror(errno), 'N'));
@@ -116,9 +116,11 @@ int				main(int argc, char **argv)
 		return (0);
 	}
 	ft_instructions();
-	//ft_draw(mlx);
-	//mlx_hook(mlx->win, KEYPRESS, KEYPRESSMASK, key_hook, mlx);
-	//mlx_mouse_hook(mlx->win, ft_mouse, mlx);
-	//mlx_loop(mlx->mlx);
+	if (ft_draw(mlx) == -1)
+		return (0);
+	mlx_mouse_hook(mlx->win, ft_mouse, mlx);
+	mlx_hook(mlx->win, 17, (1L << 17), close_hook, mlx);
+	mlx_hook(mlx->win, KEYPRESS, KEYPRESSMASK, key_hook, mlx);
+	mlx_loop(mlx->mlx);
 	return (0);
 }

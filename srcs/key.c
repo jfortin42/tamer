@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 19:12:08 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 14:14:25 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 14:57:42 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int			close_hook(t_mlx *mlx)
 {
 	ft_free_lists(mlx);
+	mlx_destroy_image(mlx->mlx, mlx->img);
 	mlx_destroy_window(mlx->mlx, mlx->win);
+	free(mlx->scene);
 	free(mlx);
 	exit(0);
 	return (0);

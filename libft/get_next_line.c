@@ -5,75 +5,55 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/04 13:13:20 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/21 19:34:19 by fsidler          ###   ########.fr       */
+/*   Created: 2016/06/22 15:30:13 by fsidler           #+#    #+#             */
+/*   Updated: 2016/06/22 15:30:38 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_read(char **str, int fd)
+int		resultat(char **line, char *buf_save)
 {
-	int		ret;
-	char	*s;
-	char	buf[BUFF_SIZE + 1];
+	char	*eol;
 
-	if ((ret = read(fd, buf, BUFF_SIZE)) == -1)
-		return (-1);
-	buf[ret] = '\0';
-	s = *str;
-	*str = ft_strjoin(*str, buf, 'N');
-	if (*s != 0)
-		;//free(s);
-	return (ret);
-}
-
-static int		ft_get_line(char **str, char **line, char *s)
-{
-	int		i;
-	char	*join;
-
-	i = 0;
-	if (*s == '\n')
-		i = 1;
-	*s = 0;
-	*line = ft_strjoin("", *str, 'N');
-	if (i == 0 && ft_strlen(*str) != 0)
+	eol = ft_strchr(buf_save, '\n');
+	if (NULL != eol)
 	{
-		*str = ft_strnew(1);
+		*eol = '\0';
+		*line = ft_strdup(buf_save);
+		ft_memmove(buf_save, &eol[1], ft_strlen(&eol[1]) + 1);
 		return (1);
 	}
-	else if (i == 0 && !(ft_strlen(*str)))
-		return (0);
-	join = *str;
-	*str = ft_strjoin(s + 1, "", 'N');
-	//free(join);
-	return (i);
-}
-
-int				get_next_line(int const fd, char **line)
-{
-	int			ret;
-	char		*s;
-	static char	*str;
-
-	if (str == 0)
-		str = "";
-	if (!line || BUFF_SIZE < 1)
-		return (-1);
-	ret = BUFF_SIZE;
-	while (line)
+	if (0 < ft_strlen(buf_save))
 	{
-		s = str;
-		while (*s || ret < BUFF_SIZE)
-		{
-			if (*s == '\n' || *s == 0 || *s == -1)
-				return (ft_get_line(&str, line, s));
-			s++;
-		}
-		ret = ft_read(&str, fd);
-		if (ret == -1)
-			return (-1);
+		*line = ft_strdup(buf_save);
+		*buf_save = '\0';
+		return (1);
 	}
 	return (0);
+}
+
+int		get_next_line(int const fd, char **line)
+{
+	static char	*buf_save = NULL;
+	char		buffer[BUFF_SIZE + 1];
+	char		*line_tmp;
+	int			ret;
+
+	if (NULL == line || fd < 0 || BUFF_SIZE <= 0)
+		return (-1);
+	if (NULL == buf_save)
+		buf_save = (char *)malloc(sizeof(char));
+	while (!ft_strchr(buf_save, '\n'))
+	{
+		ret = read(fd, buffer, BUFF_SIZE);
+		if (ret == -1)
+			return (-1);
+		if (0 == ret)
+			break ;
+		buffer[ret] = '\0';
+		line_tmp = ft_strjoin(buf_save, buffer, 'L');
+		buf_save = line_tmp;
+	}
+	return (resultat(line, buf_save));
 }

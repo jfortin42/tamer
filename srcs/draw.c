@@ -6,7 +6,7 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/07 16:20:03 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/22 14:21:00 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 15:44:21 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			ft_draw(t_mlx *mlx)
 		while (x < WIN_W)
 		{
 			if (ft_raytrace(mlx, node, x, y) == -1)
-				;//ft_free(blabla malloc error);
+				return (ft_free_arg(mlx, NULL, 3));
 			x++;
 		}
 		y++;

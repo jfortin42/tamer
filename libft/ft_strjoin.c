@@ -6,30 +6,27 @@
 /*   By: fsidler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/21 18:49:01 by fsidler           #+#    #+#             */
-/*   Updated: 2016/06/21 19:55:21 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/06/22 15:35:19 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*static void	ft_strjoin_free(char *s1, char *s2, int type)
+static void	ft_strjoin_free(char *s1, char *s2, int type)
 {
-	(void)s1;
-	(void)s2;
 	if (type == 'L')
-		;//free(s1);
+		free(s1);
 	else if (type == 'R')
-		;//free(s2);
+		free(s2);
 	else if (type == 'B')
 	{
-		;//free(s1);
-		//free(s2);
+		free(s1);
+		free(s2);
 	}
-}*/
+}
 
 char		*ft_strjoin(char *s1, char *s2, char type)
 {
-	(void)type;
 	char	*n;
 	int		i[2];
 
@@ -52,7 +49,7 @@ char		*ft_strjoin(char *s1, char *s2, char type)
 		n[i[0] + i[1]] = s2[i[1]];
 		i[1]++;
 	}
-	//ft_strjoin_free(s1, s2, type);
+	ft_strjoin_free(s1, s2, type);
 	n[i[0] + i[1]] = '\0';
 	return (n);
 }
