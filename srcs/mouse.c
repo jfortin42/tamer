@@ -61,7 +61,9 @@ static void		ft_tmp_string(t_mlx *mlx)
 static t_obj	*ft_seek(double u, double v, t_vec vpos, t_mlx *mlx)
 {
 	t_obj	*tmp;
+	t_th	*th;
 
+	th = (t_th *)malloc(sizeof(t_th));
 	tmp = mlx->obj;
 	K = ft_vectorsub(&mlx->cam_dir, &vpos);
 	ft_vectornorm(&K);
@@ -71,7 +73,7 @@ static t_obj	*ft_seek(double u, double v, t_vec vpos, t_mlx *mlx)
 	mlx->ray_dir = (t_vec){u * I.x + v * J.x + FOV * K.x, u * I.y + v * J.y
 		+ FOV * K.y, u * I.z + v * J.z + FOV * K.z};
 	ft_vectornorm(&mlx->ray_dir);
-	tmp = ft_intersection(mlx, tmp, mlx->ray_dir, vpos);
+	tmp = ft_intersection(th, tmp, mlx->ray_dir, vpos);
 	return (tmp);
 }
 

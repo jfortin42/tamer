@@ -40,7 +40,7 @@ int				ft_check_objects(t_mlx *mlx, t_obj *object)
 	return (0);
 }
 
-static t_vec	ft_norm(t_mlx *mlx, t_obj *tmp, t_vec pos)
+static t_vec	ft_norm(t_th *mlx, t_obj *tmp, t_vec pos)
 {
 	t_vec	norm;
 	t_vec	temp;
@@ -64,7 +64,7 @@ static t_vec	ft_norm(t_mlx *mlx, t_obj *tmp, t_vec pos)
 	return (norm);
 }
 
-static int		ft_shadow(t_mlx *mlx, t_obj *tmp, t_obj *light, t_vec pos)
+static int		ft_shadow(t_th *mlx, t_obj *tmp, t_obj *light, t_vec pos)
 {
 	t_obj	*node;
 	t_vec	dist;
@@ -93,7 +93,7 @@ static int		ft_shadow(t_mlx *mlx, t_obj *tmp, t_obj *light, t_vec pos)
 	return (0);
 }
 
-static float	ft_spec(t_mlx *mlx, t_vec dist)
+static float	ft_spec(t_th *mlx, t_vec dist)
 {
 	float	spec;
 	float	tmp;
@@ -110,7 +110,7 @@ static float	ft_spec(t_mlx *mlx, t_vec dist)
 	return (spec);
 }
 
-float			*ft_lambert(t_mlx *mlx, t_obj *tmp, t_obj *light, float *tab)
+float			*ft_lambert(t_th *mlx, t_obj *tmp, t_obj *light, float *tab)
 {
 	t_vec	pos;
 	t_vec	dist;

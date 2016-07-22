@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-void		ft_put_pixel(t_mlx *mlx, int x, int y, int color)
+void		ft_put_pixel(t_th *mlx, int x, int y, int color)
 {
 	int				i;
 	unsigned int	p;
@@ -27,7 +27,7 @@ void		ft_put_pixel(t_mlx *mlx, int x, int y, int color)
 	}
 }
 
-static void	ft_set_ray(t_mlx *mlx, double u, int x, int y)
+static void	ft_set_ray(t_th *mlx, double u, int x, int y)
 {
 	double	v;
 
@@ -45,16 +45,18 @@ static void	ft_set_ray(t_mlx *mlx, double u, int x, int y)
 
 static int	ft_clear(t_mlx *mlx)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	t_th	*th;
 
+	th = (t_th *)malloc(sizeof(t_th));
 	y = 0;
 	while (y < WIN_H)
 	{
 		x = 0;
 		while (x < WIN_W)
 		{
-			ft_put_pixel(mlx, x, y, BLACK);
+			ft_put_pixel(th, x, y, BLACK);
 			x++;
 		}
 		y++;
@@ -63,7 +65,7 @@ static int	ft_clear(t_mlx *mlx)
 	return (0);
 }
 
-static int	ft_raytrace(t_mlx *mlx, t_obj *node, int x, int y)
+static int	ft_raytrace(t_th *mlx, t_obj *node, int x, int y)
 {
 	t_obj	*tmp;
 	t_obj	*light;
@@ -92,26 +94,90 @@ static int	ft_raytrace(t_mlx *mlx, t_obj *node, int x, int y)
 	return (0);
 }
 
-int			ft_draw(t_mlx *mlx)
+void	copy_vec(t_vec *dest, t_vec *src)
 {
-	t_obj	*node;
-	int		x;
-	int		y;
+	dest->x = src->x;
+	dest->y = src->y;
+	dest->z = src->z;
+}
 
-	ft_clear(mlx);
-	node = mlx->obj;
+t_obj	*copy_obj(t_obj *obj)
+{
+	t_obj	*newlist;
+
+	newlist = (t_obj *)malloc(sizeof(t_obj));
+	if (obj && newlist)
+	{
+		newlist->type = obj->type;
+		newlist->size = obj->size;
+		copy_vec(&newlist->rot, &obj->rot);
+		copy_vec(&newlist->pos, &obj->pos);
+		newlist->col.red = obj->col.red;
+		newlist->col.green = obj->col.green;
+		newlist->col.blue = obj->col.blue;
+		newlist->next = NULL;
+		if (newlist && obj->next)
+			newlist->next = copy_obj(obj->next);
+		return (newlist);
+	}
+	return (NULL);
+}
+
+void	ft_copy(t_mlx *mlx, t_th *th)
+{
+	th->spec = mlx->spec;
+	copy_vec(&th->cam_pos, &mlx->cam_pos);
+	copy_vec(&th->cam_dir, &mlx->cam_dir);
+	copy_vec(&th->ray_dir, &mlx->ray_dir);
+	th->light = copy_obj(mlx->light);
+	th->obj = copy_obj(mlx->obj);
+	th->bpp = mlx->bpp;
+	th->size_line = mlx->size_line;
+	th->d = mlx->d;
+}
+
+void	*my_thread_process(void *arg)
+{
+	t_tab_th	*tab;
+	t_th		*th;
+	t_obj		*node;
+	int			x;
+	int			y;
+
+	tab = (t_tab_th *)arg;
+	node = tab->mlx->obj;
+	th = (t_th *)malloc(sizeof(t_th));
+	ft_copy(tab->mlx, th);
 	y = 0;
 	while (y < WIN_H)
 	{
-		x = 0;
-		while (x < WIN_W)
-		{
-			if (ft_raytrace(mlx, node, x, y) == -1)
-				return (ft_free_arg(mlx, NULL, 3));
-			x++;
-		}
+		x = WIN_W * tab->i / NB_THREAD;
+		while (x < WIN_W * (tab->i + 1) / NB_THREAD)
+			ft_raytrace(th, node, x++, y);
 		y++;
 	}
+	free(th);
+	pthread_exit(0);
+}
+
+int			ft_draw(t_mlx *mlx)
+{
+	pthread_t	th[NB_THREAD];
+	void		*ret;
+	t_tab_th	tab[NB_THREAD];
+	int			i;
+
+	i = -1;
+	ft_clear(mlx);
+	while (++i < NB_THREAD)
+	{
+		tab[i].i = i;
+		tab[i].mlx = mlx;
+		pthread_create(&th[i], NULL, my_thread_process, &tab[i]);
+	}
+	i = -1;
+	while (++i < NB_THREAD)
+		(void)pthread_join(th[i], &ret);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 	return (0);
 }

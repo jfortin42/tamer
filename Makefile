@@ -32,7 +32,7 @@ SOURCES = srcs/add.c \
 OBJECTS = $(SOURCES:.c=.o)
 
 $(NAME): $(LIBDIR)/lib$(LIB_NAME).a $(OBJECTS)
-	@$(CC) $(FLAGS) -L $(LIBDIR) -l $(LIB_NAME) -o $@ $^ -lmlx -framework OpenGL -framework AppKit
+	@$(CC) $(FLAGS) -L $(LIBDIR) -l $(LIB_NAME) -o $@ $^ -lmlx -framework OpenGL -framework AppKit -lpthread
 	@echo "compiling [ $(NAME) ] SUCCESS"
 
 $(LIBDIR)/lib$(LIB_NAME).a : 

@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-double	ft_inter_sphere(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
+double	ft_inter_sphere(t_th *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 {
 	double disc;
 
@@ -30,7 +30,7 @@ double	ft_inter_sphere(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 	return (mlx->t0);
 }
 
-double	ft_inter_cylinder(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
+double	ft_inter_cylinder(t_th *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 {
 	double disc;
 
@@ -51,7 +51,7 @@ double	ft_inter_cylinder(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 	return (mlx->t0);
 }
 
-double	ft_inter_cone(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
+double	ft_inter_cone(t_th *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 {
 	double	disc;
 
@@ -73,7 +73,7 @@ double	ft_inter_cone(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 	return (mlx->t0);
 }
 
-double	ft_inter_plane(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
+double	ft_inter_plane(t_th *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 {
 	mlx->t0 = ((ft_vectordot(&tmp->rot, &tmp->pos) -
 				ft_vectordot(&tmp->rot, &pos)) / ft_vectordot(&tmp->rot, &ray));
@@ -82,7 +82,7 @@ double	ft_inter_plane(t_mlx *mlx, t_obj *tmp, t_vec ray, t_vec pos)
 	return (mlx->t0);
 }
 
-t_obj	*ft_intersection(t_mlx *mlx, t_obj *node, t_vec ray, t_vec pos)
+t_obj	*ft_intersection(t_th *mlx, t_obj *node, t_vec ray, t_vec pos)
 {
 	t_obj	*tmp;
 	double	dist;

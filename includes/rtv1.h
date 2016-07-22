@@ -16,8 +16,11 @@
 # include <../libft/libft.h>
 # include <mlx.h>
 # include <errno.h>
+# include <pthread.h>
 
 # define BUFF_SIZE 100
+
+# define NB_THREAD 8
 
 # define FOV 2.0
 
@@ -94,6 +97,36 @@ typedef struct		s_mlx
 	float			c;
 }					t_mlx;
 
+typedef struct		s_tab_th
+{
+	t_mlx			*mlx;
+	int				i;
+}					t_tab_th;
+
+typedef struct		s_th
+{
+	int				bpp;
+	int				size_line;
+	char			*d;
+	t_vec			i;
+	t_vec			j;
+	t_vec			k;
+	t_vec			cam_pos;
+	t_vec			cam_dir;
+	t_vec			ray_dir;
+	t_vec			norm;
+	t_vec			dist;
+	t_obj			*obj;
+	t_obj			*light;
+	float			spec;
+	float			t0;
+	float			t1;
+	float			t;
+	float			a;
+	float			b;
+	float			c;
+}					t_th;
+
 int					ft_draw(t_mlx *mlx);
 int					ft_parser(t_mlx *mlx);
 int					close_hook(t_mlx *mlx);
@@ -112,25 +145,24 @@ int					ft_add_cyl_cone(t_mlx *mlx, int *k, int t, int i);
 
 void				ft_instructions(void);
 void				ft_string_put(t_mlx *mlx);
-void				ft_put_pixel(t_mlx *mlx, int x, int y, int color);
-
-double				ft_inter_cone(t_mlx *mlx, t_obj *node, t_vec ray,
+void				ft_put_pixel(t_th *mlx, int x, int y, int color);
+double				ft_inter_cone(t_th *mlx, t_obj *node, t_vec ray,
 		t_vec pos);
-double				ft_inter_cylinder(t_mlx *mlx, t_obj *node, t_vec ray,
+double				ft_inter_cylinder(t_th *mlx, t_obj *node, t_vec ray,
 		t_vec pos);
-double				ft_inter_plane(t_mlx *mlx, t_obj *node, t_vec ray,
+double				ft_inter_plane(t_th *mlx, t_obj *node, t_vec ray,
 		t_vec pos);
-double				ft_inter_sphere(t_mlx *mlx, t_obj *node, t_vec ray,
+double				ft_inter_sphere(t_th *mlx, t_obj *node, t_vec ray,
 		t_vec pos);
 
 t_obj				*ft_add_light_link(t_mlx *mlx, t_obj *link);
 t_obj				*ft_add_object_link(t_mlx *mlx, t_obj *link);
-t_obj				*ft_intersection(t_mlx *mlx, t_obj *node, t_vec ray,
+t_obj				*ft_intersection(t_th *mlx, t_obj *node, t_vec ray,
 		t_vec pos);
 
 float				*ft_endlight(t_obj *tmp, t_obj *light, float *tab,
 		float d);
-float				*ft_lambert(t_mlx *mlx, t_obj *tmp, t_obj *light,
+float				*ft_lambert(t_th *mlx, t_obj *tmp,t_obj *light,
 		float *tab);
 
 #endif
